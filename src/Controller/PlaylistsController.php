@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Repository\CategorieRepository;
@@ -15,37 +16,35 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author emds
  */
 class PlaylistsController extends AbstractController {
-    
-    
+
     const TEMPLATE_PLAYLISTS = "pages/playlists.html.twig";
 
-    
     /**
      * 
      * @var PlaylistRepository
      */
     private $playlistRepository;
-    
+
     /**
      * 
      * @var FormationRepository
      */
     private $formationRepository;
-    
+
     /**
      * 
      * @var CategorieRepository
      */
     private $categorieRepository;
 
-    function __construct(PlaylistRepository $playlistRepository, 
+    function __construct(PlaylistRepository $playlistRepository,
             CategorieRepository $categorieRepository,
             FormationRepository $formationRespository) {
         $this->playlistRepository = $playlistRepository;
         $this->categorieRepository = $categorieRepository;
         $this->formationRepository = $formationRespository;
     }
-    
+
     /**
      * @Route("/playlists", name="playlists")
      * @return Response
@@ -55,7 +54,7 @@ class PlaylistsController extends AbstractController {
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::TEMPLATE_PLAYLISTS, [
                     'playlists' => $playlists,
-                    'categories' => $categories           
+                    'categories' => $categories
         ]);
     }
 
@@ -69,13 +68,17 @@ class PlaylistsController extends AbstractController {
         if ($champ === "name") {
             $playlists = $this->playlistRepository->findAllOrderByName($ordre);
         }
+        if ($champ === "number") {
+            $playlists = $this->playlistRepository->findAllOrderByNumber($ordre);
+        }
+
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::TEMPLATE_PLAYLISTS, [
                     'playlists' => $playlists,
-                    'categories' => $categories            
+                    'categories' => $categories
         ]);
-    }          
-	
+    }
+
     /**
      * @Route("/playlists/recherche/{champ}/{table}", name="playlists.findallcontain")
      * @param type $champ
@@ -93,8 +96,8 @@ class PlaylistsController extends AbstractController {
                     'valeur' => $valeur,
                     'table' => $table
         ]);
-    }  
-    
+    }
+
     /**
      * @Route("/playlists/playlist/{id}", name="playlists.showone")
      * @param type $id
@@ -109,6 +112,6 @@ class PlaylistsController extends AbstractController {
                     'playlistcategories' => $playlistCategories,
                     'playlistformations' => $playlistFormations
         ]);
-    }   
-    
+    }
+
 }

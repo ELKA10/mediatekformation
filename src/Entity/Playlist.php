@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=PlaylistRepository::class)
  */
 class Playlist {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -77,11 +78,11 @@ class Playlist {
         return $this;
     }
 
-        public function removeFormation(Formation $formation): self {
+    public function removeFormation(Formation $formation): self {
         if ($this->formations->removeElement($formation) && $formation->getPlaylist() === $this) {
+            // set the owning side to null (unless already changed)
                 $formation->setPlaylist(null);
-            }
-
+        }
         return $this;
     }
 
@@ -100,5 +101,5 @@ class Playlist {
         }
         return $categories;
     }
-
+    
 }
